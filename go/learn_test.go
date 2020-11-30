@@ -21,3 +21,7 @@ func TestUnsafe(t *testing.T) {
 func TestTicker(t *testing.T) {
 	Ticker()
 }
+
+func TestWaitGroup(t *testing.T) {
+	wg()
+}

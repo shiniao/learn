@@ -10,6 +10,8 @@ func Ticker() {
 	// 设置一个一秒的ticker
 	ticker := time.NewTicker(time.Second)
 	defer ticker.Stop()
+
+	// 接收完成信号
 	done := make(chan bool)
 
 	go func() {
