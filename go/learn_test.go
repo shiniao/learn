@@ -25,3 +25,8 @@ func TestTicker(t *testing.T) {
 func TestWaitGroup(t *testing.T) {
 	wg()
 }
+
+// /usr/local/go/bin/go test -timeout 30s -run ^TestWaitGroup$ github.com/shiniao/learn -v
+func TestSignal(t *testing.T)  {
+	mySignal()
+}
