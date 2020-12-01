@@ -31,44 +31,37 @@ func TestSignal(t *testing.T) {
 	mySignal()
 }
 
-// Sync
-var urls = []string{
-	"http://www.golang.org/",
-	"http://www.google.com/",
-	"http://www.somestupidname.com/",
-}
-
-func TestSyncPool(t *testing.T) {
-
-	for _, url := range urls {
-		syncPool(url)
-	}
-
-}
-
-func TestSyncNoPool(t *testing.T) {
-
-	for _, url := range urls {
-		syncNoPool(url)
-	}
-}
-
-func BenchmarkSyncPool(b *testing.B) {
+// Sync pool test and benchmark
+func BenchmarkWithoutPool(b *testing.B) {
+	var s *Small
+	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		// for _, url := range urls {
-		// 	syncPool(url)
-		// }
-		syncPool(urls[0])
+		for i := 0; i < 1000; i++ {
+			s = new(Small)
+			s.a++
+		}
 	}
 }
 
-func BenchmarkSyncNoPool(b *testing.B) {
+func BenchmarkWithPool(b *testing.B) {
+	var s *Small
+	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		// for _, url := range urls {
-		// 	syncNoPool(url)
-		// }
-		syncNoPool(urls[0])
+		for i := 0; i < 1000; i++ {
+			s = NewSmallPool()
+			s.a++
+			s.Free()
+		}
 	}
 }
+// bench result:
+// go test -bench . -run=none -benchmem
+// goos: linux
+// goarch: amd64
+// pkg: github.com/shiniao/learn
+// BenchmarkWithoutPool-8             80280             15546 ns/op            8000 B/op       1000 allocs/op
+// BenchmarkWithPool-8                81262             15556 ns/op               0 B/op          0 allocs/op
+// PASS
+// ok      github.com/shiniao/learn        2.826s

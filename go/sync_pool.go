@@ -10,29 +10,24 @@ import (
 	"sync"
 )
 
-// pool 中返回了 httpPkg 结构体
-// 可以复用
+//Small just small
+type Small struct {
+	a int
+}
+
+// pool 中返回了 Small 结构体, 可以复用
 var pool = sync.Pool{
 	New: func() interface{} {
-		return new(HTTPPkg)
+		return new(Small)
 	},
 }
 
-
-// Pool 减少了GC的压力，pool中的对象可以复用，减少内存压力
-func syncPool(url string) string {
-	// 从pool取一个
-	http := pool.Get().(*HTTPPkg)
-	result := http.Get(url)
-	// 用了之后放回去
-	pool.Put(http)
-	
-	return result
-
+// NewSmallPool init a small pool
+func NewSmallPool() *Small {
+	return pool.Get().(*Small)
 }
 
-// 不使用 pool
-func syncNoPool(url string) string {
-	http := HTTPPkg{}
-	return http.Get(url)
+//Free 释放对象
+func (s *Small) Free() {
+	pool.Put(s)
 }
