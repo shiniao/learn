@@ -7,13 +7,13 @@ import (
 	"sync"
 )
 
-type httpPkg struct{}
+type HTTPPkg struct{}
 
-func (httpPkg) Get(url string) string {
+func (HTTPPkg) Get(url string) string {
 	return fmt.Sprintf("get %s ok.", url)
 }
 
-var http httpPkg
+var http HTTPPkg
 
 func wg() {
 
