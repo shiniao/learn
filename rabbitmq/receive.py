@@ -1,5 +1,6 @@
 import pika
 
+# 创建连接
 credentials = pika.PlainCredentials('admin', 'admin')
 parameters = pika.ConnectionParameters('localhost', 5672, '/', credentials=credentials)
 connection = pika.BlockingConnection(parameters)
